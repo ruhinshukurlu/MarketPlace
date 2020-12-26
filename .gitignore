@@ -1,0 +1,4 @@
+.venv
+__pycache__
+pgdb/
+db.sqlite3
