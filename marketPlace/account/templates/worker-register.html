@@ -19,6 +19,22 @@
     <title>Worker Register</title>
 </head>
 <body id="profile-body">
+
+    <style>
+        .form-control{
+            border: 1px solid #ccc;
+            height: 50px;
+        }
+
+        .form-control:focus{
+            border: 1px solid rgb(110, 177, 253);
+        }
+        #id_birth_date_day{
+            margin-left: 10px;
+            margin-right: 10px;
+
+        }
+    </style>
     
     {% include 'partials/header.html' %}
 
@@ -30,19 +46,114 @@
                     <form method="POST">
                         {% csrf_token %}
 
+            
+
                         <div class="row">
 
-                            {% for field in form %}
                                 <div class="col-lg-6">
-                                    <div class="form-group form-group-input" >
-                                        <div class="field-name">{{field.label_tag}} <span style="color: brown;">*</span></div>
+                                    <div class="form-group " >
+                                        <div>{{form.first_name.label_tag}}</div>
                                         <div>
-                                            {{field}}
-                                            {{field.errors}}
+                                            {{form.first_name}}
+                                            {{form.first_name.errors}}
                                         </div>
                                     </div>
                                 </div>
-                            {% endfor %}
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.last_name.label_tag}}</div>
+                                        <div>
+                                            {{form.last_name}}
+                                            {{form.last_name.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.username.label_tag}}</div>
+                                        <div>
+                                            {{form.username}}
+                                            {{form.username.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.password1.label_tag}}</div>
+                                        <div>
+                                            {{form.password1}}
+                                            {% for error in form.password1.errors %}
+                                                <span>{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.password2.label_tag}}</div>
+                                        <div>
+                                            {{form.password2}}
+                                            {% for error in form.password2.errors %}
+                                                <span>{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.phone_number.label_tag}}</div>
+                                        <div>
+                                            {{form.phone_number}}
+                                            {{form.phone_number.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.languages.label_tag}}</div>
+                                        <div>
+                                            {{form.languages}}
+                                            {{form.languages.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.experience.label_tag}}</div>
+                                        <div>
+                                            {{form.experience}}
+                                            {{form.experience.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group " >
+                                        <div>{{form.work_place.label_tag}}</div>
+                                        <div>
+                                            {{form.work_place}}
+                                            {{form.work_place.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group " >
+                                        <div>{{form.about.label_tag}}</div>
+                                        <div>
+                                            {{form.about}}
+                                            {{form.about.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group " >
+                                        <div>{{form.birth_date.label_tag}}</div>
+                                        <div class="d-flex">
+                                            {{form.birth_date}}
+                                            {{form.birth_date.errors}}
+                                        </div>
+                                    </div>
+                                </div>
                             
                         </div>
                         <div class="row">

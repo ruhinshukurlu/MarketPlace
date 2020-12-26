@@ -23,7 +23,15 @@
                             <div class="triangle"></div>
                             <span>Hello, {{request.user.first_name|capfirst}}</span>
                             <ul>
-                                <li><a href="">
+                                {% if request.user.is_worker %}
+                                <li><a href="{% url 'worker:add-skill' %}">
+                                    <i class="far fa-plus-square mr-2"></i>
+                                    Add Skill</a></li>
+                                    <li><a href="{% url 'account:worker-detail' request.user.worker.pk %}">
+                                        <i class="far fa-user-circle mr-2"></i>
+                                        Work Profile</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'account:user-profile' request.user.pk %}">
                                     <i class="far fa-user-circle mr-2"></i>
                                     My Profile</a></li>
                                 <li><a href="{% url 'account:logout' %} " style="color: red;">
@@ -35,7 +43,7 @@
                 
                     <div class="reserve-table">
                         <button type="button" class="header-btn"><i class="far fa-calendar"></i></button>
-                        <div class="custom-drop-down p-3 box2 scroll-y" style="display: none;">
+                        <div class="custom-drop-down p-3 box2 scroll-y shadow" style="display: none;">
                             <div class="triangle"></div>
                             <span class="pb-2">Upcoming Services</span>
                             <p class="pl-2 pr-2">You have no upcoming Services</p>
@@ -45,7 +53,7 @@
                         <button type="button" class="header-btn notification-btn">
                             <i class="far fa-bell"></i>
                         </button>
-                        <div class="custom-drop-down box3 scroll-y p-3" style="display: none;">
+                        <div class="custom-drop-down box3 scroll-y p-3 shadow" style="display: none;">
                             <div class="triangle"></div>
                             <span>Notifications</span>
                             <img src="{% static 'images/animat-bell-color.gif' %}" width="50%" class="m-auto" alt="">
@@ -76,8 +84,8 @@
                 </button>
             </div>
             <div class="modal-body d-column">
-                <a href="{% url 'account:user-register' %}" class="btn register-btn mb-2">Sign Up for User</a>
-                <a href="{% url 'account:worker-register' %}" class="btn register-btn">Sign Up for Company</a>
+                <a href="{% url 'account:user-register' %}" class="btn register-btn mb-2">Sign Up as User</a>
+                <a href="{% url 'account:worker-register' %}" class="btn register-btn">Sign Up as Worker</a>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

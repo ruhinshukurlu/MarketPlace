@@ -38,8 +38,13 @@
             {% else %}
                 <img src="{% static 'images/profile.png' %}" alt="">
             {% endif %}
-            <div>
-                <h2> {{user.first_name|capfirst}} {{user.last_name|capfirst}} </h2>
+            <div class="align-center d-column">
+                <h2 class="m-0"> {{user.first_name|capfirst}} {{user.last_name|capfirst}} </h2>
+                <div class="d-flex align-center mt-1">
+                    <i class="far fa-envelope mr-1"></i>
+                    <span>Email : </span>
+                    <span>{{user.email}}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -48,16 +53,22 @@
         <div class="container custom-container">
             <div class="inner-container">
                 <div class="row">
-                    <div class="col-lg-2">
+                    <div class="col-lg-3 bg-white shadow reservations">
                         <nav>
                             <ul class="profile-menu-list">
-                                <li><a href="{% url 'account:change-password' %}">Change Your Password</a></li>
-                                <li><a href="{% url 'account:user-update' user.pk %}">Account Details</a></li>
-                                <li><a href="#">Delete Account</a></li>
+                                <li><a href="{% url 'account:change-password' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-exchange-alt mr-1"></i>
+                                    Change Password</a></li>
+                                <li><a href="{% url 'account:user-update' user.pk %}" class="btn btn-outline-success">
+                                    <i class="far fa-edit mr-1"></i>
+                                    Edit</a></li>
+                                <li><a href="{% url 'account:logout' %}" class="btn btn-outline-danger">
+                                    <i class="fas fa-sign-out-alt mr-1"></i>
+                                    Logout</a></li>
                             </ul>
                         </nav>
                     </div>
-                    <div class="col-lg-10">
+                    <div class="col-lg-9">
                         <div class="reservations shadow mb-5">
                             <div class="name">
                                 <h3>Upcoming Services</h3>

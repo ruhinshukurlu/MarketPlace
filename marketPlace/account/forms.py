@@ -93,6 +93,7 @@ class WorkerRegisterForm(UserCreationForm):
     
     about = forms.CharField(widget=forms.Textarea(attrs={
                     'class': 'form-control register-input',
+                    'rows' : '5'
     }))
 
     languages = forms.ChoiceField(choices=LANGUAGES, widget=forms.Select(attrs={

@@ -8,6 +8,11 @@ from django.contrib.auth.views import LoginView,PasswordChangeView,PasswordChang
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from worker.models import *
+from worker.forms import *
+
+from django.views.generic.edit import FormMixin
+
 
 User = get_user_model()
 
@@ -33,6 +38,7 @@ class WorkerCreateView(CreateView):
     template_name = "worker-register.html"
 
     def form_valid(self, form):
+        print('okkk')
         user = form.save()
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
        
@@ -84,6 +90,58 @@ class CustomerProfileView(LoginRequiredMixin, DetailView):
    
     def get_object(self):
         return self.request.user
+
+
+class WorkerDetailView(FormMixin, DetailView):
+    model = Worker
+    template_name = "worker-detail.html"
+    context_object_name = 'worker'
+    form_class = TaskForm
+    success_url = reverse_lazy('core:home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        service = self.request.session['service']
+        print(service)
+        skill = self.request.GET.get('skill')
+        context["skills"] = Skill.objects.filter(service__id=service, user=self.object.user)
+        if skill:
+            context["skills"] = Skill.objects.filter(service__slug = skill, user=self.object.user)
+
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+    
+    def form_valid(self, form):
+        # task = Task.objects.create(
+        #     user=self.request.user
+        # )
+        print('okkk')
+        service = self.request.session['service']
+        skill = self.request.GET.get('skill')
+
+        task = form.save(commit=False)
+        task.user = self.request.user
+        task.worker = self.object.user
+        if skill:
+            task.skill = Skill.objects.get(service__slug=skill, user=self.object.user)
+        else:
+            task.skill = Skill.objects.get(service__id=service, user=self.object.user)
+        task.save()
+       
+        return redirect('core:home')
+
+   
+
+    
 
 
 class CustomerUpdateView(UpdateView):

@@ -22,6 +22,8 @@ urlpatterns = [
     path("user/<int:pk>", CustomerProfileView.as_view(), name="user-profile"),
     path("user/<int:pk>/update", CustomerUpdateView.as_view(), name="user-update"),
 
+    path("worker/<int:pk>", WorkerDetailView.as_view(), name="worker-detail"),
+
     # path("company/<int:pk>", CompanyProfileView.as_view(), name="company-profile"),
     # path("company/<int:pk>/update", CompanyUpdateView.as_view(), name="company-update"),
 

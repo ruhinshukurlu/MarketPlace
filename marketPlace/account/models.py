@@ -58,7 +58,6 @@ class Worker(models.Model):
         ('3 years', '3 years'),
         ('4 years', '4 years'),
         ('5+ years', '5+ years'),
-
     )
 
     user = models.OneToOneField("account.User", verbose_name=_("Worker"), on_delete=models.CASCADE, primary_key=True, related_name='worker')
@@ -76,7 +75,7 @@ class Worker(models.Model):
         verbose_name_plural = _("Workers")
 
     def __str__(self):
-        return self.work_place
+        return self.user.first_name
 
 
 class WorkPlace(models.Model):

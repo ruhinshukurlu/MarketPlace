@@ -7,5 +7,7 @@ app_name = 'core'
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
+    path("services/<slug:slug>", ServiceDetailView.as_view(), name="service-detail"),
+    # path('search/', autocomplete, name='autocomplete'),
 ]
 

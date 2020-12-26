@@ -1,6 +1,12 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from slugify import slugify
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from notifications.signals import notify
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 # Create your models here.
 
@@ -10,6 +16,7 @@ class Service(models.Model):
     description = models.TextField(_("Description"), blank=True, null=True)
     image = models.ImageField(_("Image"), upload_to='service-photos/', blank=True, null = True)
     created_at = models.DateField(_("Created At"), auto_now=False, auto_now_add=True)
+    slug = models.SlugField(_("Slug"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Service")
@@ -17,6 +24,10 @@ class Service(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super(Service, self).save(*args, **kwargs)
 
 
 
@@ -35,22 +46,39 @@ class Skill(models.Model):
         verbose_name_plural = _("Skills")
 
     def __str__(self):
-        return self.name
+        return self.service.title
 
 
 class Task(models.Model):
 
-    user = models.ForeignKey("account.User", verbose_name=_("User"), on_delete=models.CASCADE, related_name='task')
+    user = models.ForeignKey("account.User", verbose_name=_("User"), on_delete=models.CASCADE, related_name='user_task')
+    worker = models.ForeignKey("account.User", verbose_name=_("Worker"), on_delete=models.CASCADE, related_name='worker_task', blank=True, null=True)
     skill = models.ForeignKey("Skill", verbose_name=_("Skill"), on_delete=models.CASCADE, related_name='task')
+
+    accept = models.BooleanField(_("Accept"), default=False)
+    denied = models.BooleanField(_("Denied"), default=False)
+    text = models.TextField(_("Text"))
+    created_at = models.DateField(_("Created At"), auto_now=False, auto_now_add=True)
+
+    date = models.DateField(_("Date"), blank=True, null=True)
+    time = models.TimeField(_("Time"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Task")
         verbose_name_plural = _("Tasks")
 
     def __str__(self):
-        return self.name
+        return f"{self.user.first_name}"
 
-    
+@receiver(pre_save,sender=Task)
+def send_user_data_when_created_by_admin(sender, instance, **kwargs):
+    recipient = User.objects.get(email=instance.worker.email)
+    print(recipient, sender)
+    if instance:
+        notify.send(sender, recipient = recipient , verb='was saved')
+        print('okkk signal')
+      
+ 
 
 class Vehicle(models.Model):
 
