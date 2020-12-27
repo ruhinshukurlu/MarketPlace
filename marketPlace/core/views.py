@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView, ListView
 from django.http import HttpResponse
 from worker.models import *
 from account.models import *
 import json
 
+from datetime import datetime
 # Create your views here.
 
 class HomeView(TemplateView):
@@ -44,5 +45,40 @@ class ServiceDetailView(ListView):
         
         return queryset
     
+
+class TaskListView(ListView):
+    model = Task
+    template_name = "task-list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["upcoming_tasks"] = Task.objects.filter(worker=self.request.user, accept=False, denied=False)
+        context["accepted_tasks"] = Task.objects.filter(worker=self.request.user, accept=True, date__gt = datetime.today())
+        context["past_tasks"] = Task.objects.filter(worker=self.request.user, accept=True, date__lt = datetime.today())
+
+        return context
+    
     
 
+def accept(request, pk):
+
+    if request.method == 'POST':
+        task = Task.objects.get(id=pk)
+        task.accept = True
+        task.save()
+        
+        return redirect('core:task-list')
+
+def denied(request, pk):
+
+    if request.method == 'POST':
+        task = Task.objects.get(id=pk)
+        task.denied=True
+        task.save()
+        
+        return redirect('core:task-list')
+
+
+class PaymenyView(TemplateView):
+    template_name = "payment.html"
+ 

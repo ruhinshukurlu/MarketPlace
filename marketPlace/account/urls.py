@@ -24,24 +24,7 @@ urlpatterns = [
 
     path("worker/<int:pk>", WorkerDetailView.as_view(), name="worker-detail"),
 
-    # path("company/<int:pk>", CompanyProfileView.as_view(), name="company-profile"),
-    # path("company/<int:pk>/update", CompanyUpdateView.as_view(), name="company-update"),
+    path("/request/sent", CompletedRequest.as_view(), name="request-complete"),
 
-    # path('reset_password/',
-    #  auth_views.PasswordResetView.as_view(template_name = 'reset_password.html',
-    #  success_url = reverse_lazy('account:password_reset_done')),
-    #  name="password_reset"),
-
-    # path('reset_password_done/', 
-    #     auth_views.PasswordResetDoneView.as_view(template_name = 'reset_password_done.html'), 
-    #     name="password_reset_done"),
-
-    # path('reset/<uidb64>/<token>/',
-    #  auth_views.PasswordResetConfirmView.as_view(template_name = 'password_reset_confirm.html',success_url = reverse_lazy('account:password_reset_complete')), 
-    #  name="password_reset_confirm"),
-
-    # path('reset_password_complete/', 
-    #     auth_views.PasswordResetCompleteView.as_view(template_name = 'password_reset_complete.html'), 
-    #     name="password_reset_complete"),
 ]
 

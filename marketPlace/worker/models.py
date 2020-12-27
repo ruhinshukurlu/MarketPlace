@@ -70,15 +70,24 @@ class Task(models.Model):
     def __str__(self):
         return f"{self.user.first_name}"
 
-@receiver(pre_save,sender=Task)
+@receiver(post_save,sender=Task)
 def send_user_data_when_created_by_admin(sender, instance, **kwargs):
-    recipient = User.objects.get(email=instance.worker.email)
-    print(recipient, sender)
-    if instance:
-        notify.send(sender, recipient = recipient , verb='was saved')
-        print('okkk signal')
-      
- 
+    
+    if instance.accept:
+        print('ok accept')
+        recipient = User.objects.get(email=instance.user.email)
+        notify.send(sender, recipient = recipient , verb=f'Your {instance.skill.service.title} task accepted by {instance.worker.first_name} {instance.worker.last_name} <a class="btn btn-outline-primary" href="/payment">Go to Payment</a>')
+
+    elif instance.denied:
+        print('ok deny')
+        recipient = User.objects.get(email=instance.user.email)
+        notify.send(sender, recipient = recipient , verb=f'Your {instance.skill.service.title} task denied by {instance.worker.first_name} {instance.worker.last_name}')
+    
+    else:
+        recipient = User.objects.get(email=instance.worker.email)
+        notify.send(sender, recipient = recipient , verb=f'You have new {instance.skill.service.title} task from {instance.user.first_name} {instance.user.last_name}')
+
+
 
 class Vehicle(models.Model):
 

@@ -107,7 +107,7 @@ class WorkerDetailView(FormMixin, DetailView):
         context["skills"] = Skill.objects.filter(service__id=service, user=self.object.user)
         if skill:
             context["skills"] = Skill.objects.filter(service__slug = skill, user=self.object.user)
-
+        
         return context
     
     def post(self, request, *args, **kwargs):
@@ -137,10 +137,11 @@ class WorkerDetailView(FormMixin, DetailView):
             task.skill = Skill.objects.get(service__id=service, user=self.object.user)
         task.save()
        
-        return redirect('core:home')
+        return redirect('account:request-complete')
 
    
-
+class CompletedRequest(TemplateView):
+    template_name = "task-sent-complete.html"
     
 
 

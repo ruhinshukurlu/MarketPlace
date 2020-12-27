@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <title>Payment</title>
+    
+   <style>
+       body {
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+        }
+
+
+        label {
+            font-weight: 500;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        #card-errors {
+            height: 20px;
+            padding: 4px 0;
+            color: #fa755a;
+        }
+
+        .token {
+            color: #32325d;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 500;
+        }
+
+        .wrapper {
+            width: 100%;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        #stripe-token-handler {
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            padding: 20px 30px;
+            border-radius: 0 0 4px 4px;
+            box-sizing: border-box;
+            box-shadow: 0 50px 100px rgba(50, 50, 93, 0.1),
+                0 15px 35px rgba(50, 50, 93, 0.15),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+            -webkit-transition: all 500ms ease-in-out;
+            transition: all 500ms ease-in-out;
+            transform: translateY(0);
+            opacity: 1;
+            background-color: white;
+        }
+
+        #stripe-token-handler.is-hidden {
+            opacity: 0;
+            transform: translateY(-80px);
+        }
+
+        .form-row {
+            width: 100%;
+            height: 80px;
+            float: left;
+        }
+
+        #card-element {
+            background-color: white;
+            width: 100%;
+            height: 50px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            box-shadow: 0 1px 3px 0 #e6ebf1;
+            -webkit-transition: box-shadow 150ms ease;
+            transition: box-shadow 150ms ease;
+        }
+
+        .btn-Stripe {
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            text-decoration: none;
+            color: #fff;
+            background: #32325d;
+            white-space: nowrap;
+            display: inline-block;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 14px;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-decoration: none;
+            -webkit-transition: all 150ms ease;
+            transition: all 150ms ease;
+            float: left;
+            margin-left: 12px;
+            margin-top: 28px;
+        }
+
+        .btn-Stripe:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+            background-color: #43458b;
+        }
+
+        #card-element--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+
+        #card-element--invalid {
+            border-color: #fa755a;
+        }
+
+        #card-element--webkit-autofill {
+            background-color: #fefde5 !important;
+        }
+
+        .complete-reserve{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .complete-reserve:hover{
+            text-decoration: none;
+            color: #fff;
+        }
+   </style>
+
+<script src="https://js.stripe.com/v3/"></script>
+   
+
+</head>
+<body id="profile-body">
+    
+    {% include 'partials/header.html' %}
+
+    <main style="min-height: 600px;">
+        <div class="bg-white container mt-5 mb-5 p-3">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h6 class="bold mt-2 mb-2">You are almost done </h6>
+                    <span >You successfully reserved table. If you want to pay now enter card number and other informations, also you can pay by cash after meal at our restaurant.</span>
+                    
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            
+                            <img src="{% static 'images/img3.jpg' %}" width="100%" alt="">
+                        </div>
+                        <div class="col-9 d-column justify-content-around">
+                            <h4 class="bold full">Some text</h4>
+                            <div class="d-flex justify-content-between">
+                                <span >
+                                    <i class="far fa-calendar"></i> Some text
+                                </span>
+                                <span>
+                                    <i class="far fa-clock"></i> Some text
+                                </span>
+                                
+                                <span>
+                                    <i class="far fa-user"></i> Some text
+                                </span>
+                                <span>
+                                    
+                                    <i class="fas fa-coins"></i> Total Price : $ 34
+                                </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form action="" method="POST" class="d-column full mt-5" id="payment-form">
+                            
+                            <div class="d-flex full">
+                                <div class="form-group full mr-2">
+                                    <input required type="text" name="username" placeholder="Username" class="form-control">
+                                </div>
+                                <div class="form-group full">
+                                    <input required type="text" name="phone" placeholder="Phone Number" class="form-control">
+                                </div>
+                            </div>
+
+
+                            <div class="form-row full align-items-center mb-2">
+                                
+                                <div id="card-element">
+                                  <!-- a Stripe Element will be inserted here. -->
+                                </div>
+                                <!-- Used to display Element errors -->
+                                <div id="card-errors" role="alert"></div>
+                              </div>
+                            <div class="d-flex full">
+                                <div class="form-group full mr-2">
+                                    <select class="custom-select" name="occasion">
+                                        <option selected>Select an occasion (optional)</option>
+                                        <option value="Birthday">Birthday</option>
+                                        <option value="Anniversary">Anniversary</option>
+                                        <option value="Date night">Date night</option>
+                                        <option value="Business Meal">Business Meal</option>
+                                        <option value="Celebration">Celebration</option>
+
+                                    </select>
+                                </div>
+                                <div class="form-group full">
+                                    <textarea name="special_request" id="" cols="15" rows="1" class="form-control" placeholder="Add a special request (optional)"></textarea>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group mt-4 d-flex">
+                                <input type="submit" class="find-table-btn mr-2 bold" value="Pay With Card">
+                                <a href="{% url 'core:home' %}" class="find-table-btn bold complete-reserve">Pay by Cash</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-column pl-5">
+                    <h5 class="bold mb-4">What to know before you go</h5>
+                    <strong class="mb-2">Important dining information</strong>
+                    <p>We have a 15 minute grace period. Please call us if you are running later than 15 minutes after your reservation time.</p>
+                    <p>Your table will be reserved for 1 hour.</p>
+                    <strong>A note from the restaurant</strong>
+                    <p>Thank you for joining us! Please note that masks will be required when not 
+                        seated for dining and please maintain social distancing. Because of our limited
+                         capacity we ask that you not be late and respect the time limitations when we are busy.
+                         You are booking a garden table. Most of our tables are covered for light rain....but a
+                         few are not. Bring an umbrella in case? <br>
+                        <strong>Thanks! {{reservation.company.company_name}}</strong>
+                        </p>
+                </div>
+            </div>
+        </div>
+    </main>
+   
+    {% include 'partials/footer.html' %}
+
+    
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        // Create a Stripe client.
+        var stripe = Stripe('pk_test_51HGewRGdwSoA84C6FFFL1KMOQ3yqZLMR9Htbu6uKujXUcsplKwIrcylme2FrB9BjTRun5BGAaes4lOy0PHKnmtPU00speaPqsp');
+
+        // Create an instance of Elements.
+        var elements = stripe.elements();
+
+        // Custom styling can be passed to options when creating an Element.
+        // (Note that this demo uses a wider set of styles than the guide below.)
+        var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+            color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+        };
+
+        // Create an instance of the card Element.
+        var card = elements.create('card', {style: style});
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+        card.on('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+        });
+
+        // Handle form submission.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+            // Inform the user if there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+            } else {
+            // Send the token to your server.
+            stripeTokenHandler(result.token);
+            }
+        });
+        });
+
+        // Submit the form with the token ID.
+        function stripeTokenHandler(token) {
+            // Insert the token ID into the form so it gets submitted to the server
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+        }
+
+    </script>
+
+
+    <script>
+        for(var index = 0; index < $('.rating-box').length; index++ ){
+            for(var i = 0; i< parseInt($('.rating-box').eq(index).data('type'));i++){
+                $('.rating-box').eq(index).find('i').eq(i).removeClass('far').addClass('fas')
+            }
+        }
+    </script>
+</body>
+</html>

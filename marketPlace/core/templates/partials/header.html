@@ -8,8 +8,8 @@
     <div class="custom-container container custom-container-mobile shadow">
         <div class="row justify-content-between">
             <div class="left side">
-                <a href="{% url 'core:home' %}">
-                    <img src="{% static 'images/logo.png' %}" width="200px" alt="">
+                <a href="{% url 'core:home' %}"> 
+                    <img src="{% static 'images/easy-logo.png' %}" width="200px" height="60px" style="object-fit: cover;" alt="">
                 </a>
             </div>
             <div class="right side">
@@ -30,6 +30,9 @@
                                     <li><a href="{% url 'account:worker-detail' request.user.worker.pk %}">
                                         <i class="far fa-user-circle mr-2"></i>
                                         Work Profile</a></li>
+                                    <li><a href="{% url 'core:task-list' %}">
+                                        <i class="fas fa-tasks mr-2"></i>
+                                        Your Tasks</a></li>
                                 {% endif %}
                                 <li><a href="{% url 'account:user-profile' request.user.pk %}">
                                     <i class="far fa-user-circle mr-2"></i>

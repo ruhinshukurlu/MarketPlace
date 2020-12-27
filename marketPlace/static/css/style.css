@@ -302,7 +302,7 @@ h3{
     border-radius: 4px;
 }
 .overlay-text{
-    width: 80%;
+    width: 60%;
     text-align: center;
     display: flex;
     flex-direction: column;
