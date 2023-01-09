@@ -1,0 +1,116 @@
+
+
+<head>
+    {% load static %}
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reserve-page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <title>User Register</title>
+</head>
+
+<body id="profile-body">
+
+    {% include 'partials/header.html' %}
+
+    <style>
+        .form-control:focus {
+            border: 1px solid rgb(116, 184, 248);
+        }
+        .form-group ul{
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+
+    <!-- <main class="mb-5"> -->
+    <div class="container main-register-container pb-5 shadow">
+        <div class="row">
+
+            <div class="col-lg-8 mx-auto pt-5">
+            <h3 class="full bold bottom-border pb-3 padding-mobile">Add New Skill</h3>
+
+                <form method="post" enctype="multipart/form-data" id="addTourForm">
+                    {% csrf_token %}
+
+                    {{skill_form.management_form}}
+                    {{image_form.management_form}}
+
+
+                    <div class="d-column">
+                        {% for field in skill_form %}
+                        <div class="form-group">
+                            {{field.label_tag}}
+                            {{field}}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-8" id="photosBox">
+                            {% for field in image_form %}
+                                <div class="form-group photo-item mb-2">
+                                    {{field.label_tag}}
+                                    {{field}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-primary" type="button" onclick="addPhoto()">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Add Another Photo</button>
+                        </div>
+                    </div>
+
+
+                    <input type="submit" value="Add Skill" class="btn btn-outline-success pr-3 pl-3 full">
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- </main> -->
+
+    {% include 'partials/footer.html' %}
+
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+
+    <script>
+        var photo_box = $('#photosBox').children('.photo-item')
+        var photo_count = 1
+        // console.log(photo_box);
+
+        for (let i = 1; i < photo_box.length; i++) {
+            $(photo_box[i]).css('display', 'none')
+        }
+
+        function addPhoto() {
+            $(photo_box[photo_count]).css('display', 'block')
+            photo_count++
+        }
+    </script>
+
+
+</body>
+
+</html>

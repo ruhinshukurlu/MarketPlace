@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reserve-page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/raiting.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    
+    
+    <title>Write Comment</title>
+</head>
+<body id="raiting-body">
+    
+    {% include 'partials/header.html' %}
+
+    <main class="pt-5 mb-5">
+        <div class="container main-raiting-container pb-3" style="padding: 0;">
+            <h3 class="text-center full pt-3 pb-3 bold bottom-border">Give your feedback to "{{company.company_name}}"</h3>  
+            
+            <style>
+                .rating-menu{
+                    height: 45%;
+                }
+                .rating-menu li{
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 70%;
+                    margin: auto;
+                }
+                .like-box input{
+                    position: absolute;
+                    top: -9999px;
+                }
+            </style>
+
+            <div class="row mt-3">
+                
+                <form  class="full m-auto" style="width: 80%;" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <canvas id="myChart"></canvas>
+                            <div class="d-column align-items-center">
+                                <span style="color: #6f737b;" class="mb-2">Based on {{all_likes}} recommendation</span>
+                                <span>Would you recommend this restaurant? </span>
+                                <div class="d-flex like-box mt-2">
+                                    <input type="radio" value="1" name="like" id='liked'><label class="btn btn-outline-success mr-2 liked" for="liked">Yes</label>
+                                    <input type="radio" value="0" name="like" id='notLiked'><label class="btn btn-outline-danger notLiked" for="notLiked">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 d-flex align-items-center">
+                            <ul class="rating-menu d-column full">
+                                
+                                <li class="d-flex">
+                                    <span>Service Quality</span>
+                                    <div class="star-rating">
+                                        <fieldset>
+                                            <input required type="radio" id="Servicestar5" name="ratingService" value="5" /><label for="Servicestar5" title="Outstanding">5 stars</label>
+                                            <input required type="radio" id="Servicestar4" name="ratingService" value="4" /><label for="Servicestar4" title="Very Good">4 stars</label>
+                                            <input required type="radio" id="Servicestar3" name="ratingService" value="3" /><label for="Servicestar3" title="Good">3 stars</label>
+                                            <input required type="radio" id="Servicestar2" name="ratingService" value="2" /><label for="Servicestar2" title="Poor">2 stars</label>
+                                            <input required type="radio" id="Servicestar1" name="ratingService" value="1" /><label for="Servicestar1" title="Very Poor">1 star</label>
+                                        </fieldset>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{form.text}}
+                    </div>
+                    
+                    <input type="submit" class="float-r btn btn-success" id="submit-comment-btn" value="Send Review">
+                </form>
+            </div>
+        </div>
+    </main>
+
+    {% include 'partials/footer.html' %}
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/reserve-page.js' %}"></script>
+
+    <script>
+        
+    </script>
+
+    <script >
+       var ctx = document.getElementById('myChart').getContext('2d');
+       let labels = ['Liked', 'Not Liked']
+       let colorHex = ['#2ECC71','red']
+
+        var chart = new Chart(ctx, {
+            type: 'pie',
+
+            data: {
+                labels: labels,
+                datasets: [{
+                    backgroundColor: colorHex,
+                    data: [{{liked}}, {{disliked}}]
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                responsive : true,
+                legend : {
+                    position : 'bottom'
+                }
+            }
+        }); 
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('.header-btn').click(function(){
+                $('.custom-drop-down').slideUp()
+                $(this).siblings('.custom-drop-down').slideToggle()
+            });
+
+            $('.show-menu-btn').click(function(){
+                $('.menu-container').toggleClass('collapse-menu')
+                
+                if ($(this).text() == 'Show full menu') {
+                    $(this).text('Collapse Menu')
+                }
+                else{
+                    $(this).text('Show full menu')
+                }
+            });
+           
+        });
+    </script>
+</body>
+</html>

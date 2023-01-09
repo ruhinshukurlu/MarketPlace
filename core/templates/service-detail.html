@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+    <!-- jQuery UI !-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <style>
+      .card{
+        padding: 20px 10px;
+      }
+    </style>
+
+</head>
+
+<body>
+
+ {% include 'partials/header.html' %} 
+
+      <div class="custom-container mt-5 mb-3 shadow pt-5 pb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+              <h3 class="full bold border-bottom text-center mb-5 pb-2">You can search worker by specific address</h3>
+              <form action="" method="get" class="d-column m-auto" style="width: 80%;" >
+                <div class="d-flex align-center mb-3 full">
+                  <div class="col-3">
+                    <label class="bmd-label-static mr-2" for="workplace_autocomplete_input">
+                      <i class="fas fa-map-marker-alt mr-1"></i>
+                      Write Adress</label>
+                  </div>
+                  <div class="col-9">
+                    <input id="workplace_autocomplete_input" class="form-control full" name="search" placeholder="Address" ">
+                  </div>
+                </div>
+                <div class="d-flex">
+                  <div class="col-3">
+
+                  </div>
+                  <div class="col-9">
+                    <input type="submit" class="btn btn-outline-success full" value="Search">
+
+                  </div>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          
+        </div>
+      </div>
+      <div class="inner-container bg-white shadow pt-5" style="margin-top: 50px;">
+        <div class="container">
+        <div class="row">
+          {% for skill in skills %}
+              <div class="center col-md-12 mb-5">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between;" class=" card-body">
+                        <div class="left-side">
+                            {% if skill.user.profile_img %}
+                              <img src="{{skill.user.profile_img.url}}" style="width: 120px; height: 120px; object-fit: cover;" alt="profile-photo">
+                            {% else %}
+                              <img src="{% static 'images/profile.png' %}" style="width: 120px; height: 120px; object-fit: cover;" alt="profile-photo">
+                            {% endif %}
+                            <a style="color: darkgreen; margin-top: 8px; width: 180px;" class="card-title" href="{% url 'account:worker-detail' skill.user.worker.pk %}">View Profile & Reviews</a>
+                            
+                            <p class="card-text" style="width: 10rem; text-align: center;"> <br> With supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                        <div class="right-side">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <a href="{% url 'account:worker-detail' skill.user.worker.pk %}" style="color: #000; text-decoration: none; font-size: 28px;" class="bold">
+                                      {{skill.user.first_name|capfirst}} {{skill.user.last_name|capfirst}}</a>
+                                    <div><i class="fa fa-check-square"></i> Painting Tasks 100%</div>
+                                    <div><i class=" fa fa-star"></i> Positive Reviews <i class="fa fa-exclamation-circle"></i></div>
+                                    <div><i class="fa fa-check-circle"></i> 96% Reliable <i class="fa fa-exclamation-circle"></i></div>
+                                    <div> <i class="fa fa-car"></i>Vehicle : 
+                                      {% if skill.vehicles.all %}
+                                        {% for vehicle in skill.vehicles.all %}{{vehicle.title}}{% endfor %}
+                                      {% else %}
+                                        No Vehicle
+                                      {% endif %}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="bold">${{skill.price}}/hr </h5>
+                                </div>
+                            </div>
+
+
+                            <hr>
+                            <h5 class="bold">How I can help</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas vitae scel<span id="dots">...</span><span id="more">erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices
+                               nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. 
+                               Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis 
+                               imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non 
+                               fermentum. Sed dapibus pulvinar nibh tempor porta.</span></p>
+                            <a style="color: darkgreen;" onclick="myFunction()" id="myBtn">Read more</a>
+                            <div style="display: flex; justify-content: space-between;" class="Reviews align-center mt-3">
+                                <img src="{% static 'images/profile2.png' %}" style="width: 90px; height: 90px; object-fit: cover;" alt="profile-photo">
+                                <p class="ml-2 mt-2"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure placeat et nulla. Et odit, quo unde cupiditate aliquam iusto quibusdam? <br> <small>Name, November 24,2020</small></p>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+            
+        </div>
+        </div>
+    </div>
+
+      
+      
+
+{% include 'partials/footer.html' %}
+
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+
+
+</body>
+
+</html>

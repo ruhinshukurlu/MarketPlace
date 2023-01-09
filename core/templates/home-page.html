@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    {% load notifications_tags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+
+    <title>EasyService</title>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    //You have your locaton here
+                    console.log("Latitude: " + pos.coords.latitude +
+                        "Longitude: " + pos.coords.longitude);
+                });
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+
+
+    <style>
+        .star i {
+            color: #da3743;
+        }
+
+        /* .company-list-by-city .overlay-text{
+        width: fit-content;
+        padding: 20px;
+        background-color: rgba(0,0,0,.5);
+        border-radius: 50%;
+    } */
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="custom-container container custom-container-mobile mt-4 shadow">
+            <div class="row justify-content-between">
+                <div class="left side">
+                    <a href="{% url 'core:home' %}">
+                        <img src="{% static 'images/easy-logo.png' %}" width="200px" height="60px" style="object-fit: cover;" alt="">
+                    </a>
+                </div>
+                <div class="right side">
+
+                    {% if request.user.is_authenticated %}
+                    <div class="user-profile">
+                        <button type="button" class="header-btn">
+                            <i class="far fa-user"></i>
+                        </button>
+                        <div class="custom-drop-down shadow box1" style="display: none;">
+                            <div class="triangle"></div>
+                            <span>Hello, {{request.user.first_name|capfirst}}</span>
+                            <ul>
+                                {% if request.user.is_worker %}
+                                    <li><a href="{% url 'worker:add-skill' %}">
+                                        <i class="far fa-plus-square mr-2"></i>
+                                        Add Skill</a></li>
+                                    <li><a href="{% url 'account:worker-detail' request.user.worker.pk %}">
+                                        <i class="far fa-user-circle mr-2"></i>
+                                        Work Profile</a></li>
+                                    <li><a href="{% url 'core:task-list' %}">
+                                        <i class="fas fa-tasks mr-2"></i>
+                                        Your Tasks</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'account:user-profile' request.user.pk %}">
+                                        <i class="far fa-user-circle mr-2"></i>
+                                        My Profile</a></li>
+                                <li><a href="{% url 'account:logout' %} " style="color: red;">
+                                        <i class="fas fa-sign-out-alt mr-2" style="color: red;"></i>
+                                        Sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="reserve-table">
+                        <button type="button" class="header-btn"><i class="far fa-calendar"></i></button>
+                        <div class="custom-drop-down p-3 box2 scroll-y" style="display: none;">
+                            <div class="triangle"></div>
+                            <span class="pb-2">Upcoming Services</span>
+                            <p class="pl-2 pr-2">You have no upcoming Services</p>
+                        </div>
+                    </div>
+                    <div class="notification">
+                        <button type="button" class="header-btn notification-btn">
+                            <i class="far fa-bell"></i>
+                        </button>
+                        <div class="custom-drop-down box3 scroll-y p-3" style="display: none;">
+                            <div class="triangle"></div>
+                            <span>Notifications</span>
+                            {% if user.notifications.unread.exists %}
+                                <a href="{% url 'notifications:unread' %}"> You have <strong> {% live_notify_badge %}</strong> Notifications</a>
+                            {% else %}
+                                <img src="{% static 'images/animat-bell-color.gif' %}" width="50%" class="m-auto" alt="">
+                                <p class="pl-2 pr-2 bold text-center">Nothing to see here, you’re all caught up!</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <button type="button" class="btn register-btn mr-2" data-toggle="modal"
+                        data-target="#exampleModal">Sign Up</button>
+                    <a href="{% url 'account:login' %}" class="btn login-btn bold">Sign In</a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+            <div class="row" style="position: relative;">
+                <style>
+                    .cover-name {
+                        color: #fff;
+                        font-size: 55px;
+                        padding: 20px;
+                        border-radius: 20px;
+                    }
+                </style>
+                <div class="overlay">
+                    <div class="overlay-text" 
+                    style="background: radial-gradient(ellipse at center,rgba(0,0,0,.1) 0,transparent 100%) rgba(0,0,0,.3);">
+                        <h1 class="bold cover-name">Find Service that you need</h1>
+                    </div>
+                </div>
+                <img src="{% static 'images/home-service-7.jpg' %}" class="header-img" alt="">
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-column">
+                        <a href="{% url 'account:user-register' %}" class="btn register-btn mb-2">Sign Up as User</a>
+                        <a href="{% url 'account:worker-register' %}" class="btn register-btn">Sign Up as Worker</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <main>
+        <div class="custom-container container main-container shadow">
+            <div class="inner-container">
+                <div class="row pt-3 pb-3 bottom-border">
+                    <div class="location d-flex">
+                        <span>It looks like you're in Baku. Not correct?</span>
+                        <button onclick="getLocation()" style="color: #da3743; outline: none;"><i
+                                class="fas fa-location-arrow mr-2 ml-2"></i>Get current location</button>
+                    </div>
+                </div>
+                <div class="row mt-3" style="margin-bottom: 50px;">
+                    <h3 class="full bold bottom-border pb-3 padding-mobile">Services</h3>
+                    <div class="card-list d-flex">
+                        {% for service in services %}
+                        <div class="col-12 col-lg-4 col-xl-3 col-sm-6 card-box">
+                            <div class="card">
+                                <a href="{% url 'core:service-detail' service.slug %}">
+                                    <div class="card-img">
+                                        {% if service.image %}
+                                        <img src="{{service.image.url}}" class="card-img-self" alt="Service image">
+                                        {% else %}
+                                        <img src="{% static 'images/default-image.jpg' %}" class="card-img-self"
+                                            alt="Service image">
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="card-body align-center p-3">
+                                        <div class="d-flex full justify-content-between align-center">
+                                            <h5 class="m-0">{{service.title}}</h5>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <style>
+                   .tasker-profile-img img{
+                       width: 100px;
+                       height: 100px;
+                   }
+                   .tasker-card{
+                       border: 1px solid #ccc;
+                       border-radius: 5px;
+                   }
+                   .tasker-card{
+                       margin-bottom: 20px;
+                   }
+                   .tasker-category{
+                       margin-bottom: 5px;
+                   }
+                </style>
+
+                <div class="row mt-3 pb-5" style="margin-bottom: 50px;">
+                    <h3 class="full bold bottom-border pb-3 padding-mobile">Top Workers</h3>
+                    <div class="row">
+                        <div class="col-3 card-container">
+                            <a href="#" style="text-decoration: none; color: #000;">
+                                <div class="tasker-card p-3 shadow">
+                                    <div class="tasker-card-top mb-3 pb-3 pt-3">
+                                        <div class="d-flex">
+                                            <div class="tasker-profile-img">
+                                                <img alt="Profile photo for Jeffrey C."
+                                                    data-src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    data-srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, "
+                                                    sizes=" (max-width: 1100px) 65px, (min-width: 1101px) 100px, "
+                                                    src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, ">
+                                            </div>
+                                            <div class="d-column ml-3">
+                                                <div class="tasker-name">
+                                                    <span class="bold">Jeffrey C.</span>
+                                                    <i aria-label="Elite Tasker" class="ss-medal-star" role="img"></i>
+                                                </div>
+                                                <div class="tasker-history">
+                                                    <div class="tasker-reviews">
+                                                        <i class="ss-star"></i>
+                                                        <span>100% positive reviews</span>
+                                                    </div>
+                                                    <div class="completed-tasks">
+                                                        <i class="ss-lnr-check-circle"></i>
+                                                        <span>174 completed tasks</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" tasker-card-center border-bottom pb-1 mb-1">
+                                        <div class="d-column">
+                                            <span class="featured-skills-header border-bottom bold pb-1 mb-1">Featured Skills</span>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Help Moving</label>
+                                                <span class="category-price">$38.82/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Home Repairs</label>
+                                                <span class="category-price">$37.64/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Furniture Assembly</label>
+                                                <span class="category-price">$35.29/hr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tasker-card-bottom u-hidden--md u-hidden--sm pb-3 pt-3">
+                                        <div class="description-header bold mb-2">I'm the right person for the job:</div>
+                                        <div class="description-text">I have supplies and resources available for helping
+                                            you with your move ins, move outs and move aroun...</div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        <div class="col-3 card-container">
+                            <a href="#" style="text-decoration: none; color: #000;">
+                                <div class="tasker-card p-3 shadow">
+                                    <div class="tasker-card-top mb-3 pb-3 pt-3">
+                                        <div class="d-flex">
+                                            <div class="tasker-profile-img">
+                                                <img alt="Profile photo for Jeffrey C."
+                                                    data-src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    data-srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, "
+                                                    sizes=" (max-width: 1100px) 65px, (min-width: 1101px) 100px, "
+                                                    src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, ">
+                                            </div>
+                                            <div class="d-column ml-3">
+                                                <div class="tasker-name">
+                                                    <span class="bold">Jeffrey C.</span>
+                                                    <i aria-label="Elite Tasker" class="ss-medal-star" role="img"></i>
+                                                </div>
+                                                <div class="tasker-history">
+                                                    <div class="tasker-reviews">
+                                                        <i class="ss-star"></i>
+                                                        <span>100% positive reviews</span>
+                                                    </div>
+                                                    <div class="completed-tasks">
+                                                        <i class="ss-lnr-check-circle"></i>
+                                                        <span>174 completed tasks</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" tasker-card-center border-bottom pb-1 mb-1">
+                                        <div class="d-column">
+                                            <span class="featured-skills-header border-bottom bold pb-1 mb-1">Featured Skills</span>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Help Moving</label>
+                                                <span class="category-price">$38.82/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Home Repairs</label>
+                                                <span class="category-price">$37.64/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Furniture Assembly</label>
+                                                <span class="category-price">$35.29/hr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tasker-card-bottom u-hidden--md u-hidden--sm pb-3 pt-3">
+                                        <div class="description-header bold mb-2">I'm the right person for the job:</div>
+                                        <div class="description-text">I have supplies and resources available for helping
+                                            you with your move ins, move outs and move aroun...</div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        <div class="col-3 card-container">
+                            <a href="#" style="text-decoration: none; color: #000;">
+                                <div class="tasker-card p-3 shadow">
+                                    <div class="tasker-card-top mb-3 pb-3 pt-3">
+                                        <div class="d-flex">
+                                            <div class="tasker-profile-img">
+                                                <img alt="Profile photo for Jeffrey C."
+                                                    data-src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    data-srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, "
+                                                    sizes=" (max-width: 1100px) 65px, (min-width: 1101px) 100px, "
+                                                    src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, ">
+                                            </div>
+                                            <div class="d-column ml-3">
+                                                <div class="tasker-name">
+                                                    <span class="bold">Jeffrey C.</span>
+                                                    <i aria-label="Elite Tasker" class="ss-medal-star" role="img"></i>
+                                                </div>
+                                                <div class="tasker-history">
+                                                    <div class="tasker-reviews">
+                                                        <i class="ss-star"></i>
+                                                        <span>100% positive reviews</span>
+                                                    </div>
+                                                    <div class="completed-tasks">
+                                                        <i class="ss-lnr-check-circle"></i>
+                                                        <span>174 completed tasks</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" tasker-card-center border-bottom pb-1 mb-1">
+                                        <div class="d-column">
+                                            <span class="featured-skills-header border-bottom bold pb-1 mb-1">Featured Skills</span>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Help Moving</label>
+                                                <span class="category-price">$38.82/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Home Repairs</label>
+                                                <span class="category-price">$37.64/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Furniture Assembly</label>
+                                                <span class="category-price">$35.29/hr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tasker-card-bottom u-hidden--md u-hidden--sm pb-3 pt-3">
+                                        <div class="description-header bold mb-2">I'm the right person for the job:</div>
+                                        <div class="description-text">I have supplies and resources available for helping
+                                            you with your move ins, move outs and move aroun...</div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        <div class="col-3 card-container">
+                            <a href="#" style="text-decoration: none; color: #000;">
+                                <div class="tasker-card p-3 shadow">
+                                    <div class="tasker-card-top mb-3 pb-3 pt-3">
+                                        <div class="d-flex">
+                                            <div class="tasker-profile-img">
+                                                <img alt="Profile photo for Jeffrey C."
+                                                    data-src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    data-srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, "
+                                                    sizes=" (max-width: 1100px) 65px, (min-width: 1101px) 100px, "
+                                                    src="https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg"
+                                                    srcset=" https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_65,w_65/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 65w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_100,w_100/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 100w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_130,w_130/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 130w, https://res.cloudinary.com/taskrabbit-com/image/upload/c_fill,g_faces,h_200,w_200/v1536956935/rnvgjqb6sedpox1cxkd3.jpg 200w, ">
+                                            </div>
+                                            <div class="d-column ml-3">
+                                                <div class="tasker-name">
+                                                    <span class="bold">Jeffrey C.</span>
+                                                    <i aria-label="Elite Tasker" class="ss-medal-star" role="img"></i>
+                                                </div>
+                                                <div class="tasker-history">
+                                                    <div class="tasker-reviews">
+                                                        <i class="ss-star"></i>
+                                                        <span>100% positive reviews</span>
+                                                    </div>
+                                                    <div class="completed-tasks">
+                                                        <i class="ss-lnr-check-circle"></i>
+                                                        <span>174 completed tasks</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" tasker-card-center border-bottom pb-1 mb-1">
+                                        <div class="d-column">
+                                            <span class="featured-skills-header border-bottom bold pb-1 mb-1">Featured Skills</span>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Help Moving</label>
+                                                <span class="category-price">$ 38.82/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Home Repairs</label>
+                                                <span class="category-price">$ 37.64/hr</span>
+                                            </div>
+                                            <div class="row tasker-category full justify-content-between">
+                                                <label class="category-name">Furniture Assembly</label>
+                                                <span class="category-price">$ 35.29/hr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tasker-card-bottom u-hidden--md u-hidden--sm pb-3 pt-3">
+                                        <div class="description-header bold mb-2">I'm the right person for the job:</div>
+                                        <div class="description-text">I have supplies and resources available for helping
+                                            you with your move ins, move outs and move aroun...</div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <style>
+                    .checked {
+                        color: orange;
+                    }
+
+                    .right {
+                        margin-left: 55px;
+                        /* flex-direction: column; */
+                    }
+
+                    .name {
+                        margin-left: 10px;
+                    }
+                </style>
+                
+                <div class="row pb-3">
+                    <h4 class="mb-3 full">Don't just take our word for it</h4> <br>
+                    <div class="col-md-6">
+        
+                        <!-- user feedback -->
+        
+        
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+        
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+        
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3 d-column align-items-start">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+
+                        <img style="width: 40px;" src="{% static 'images/profile-icon.webp' %}" alt="profile-photo">
+                        <b class="name"> Name</b>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+        
+                        <div class="right mb-3">
+                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti quisquam quae dolorem explicabo omnis blanditiis voluptatum iusto, reprehenderit doloremque. Accusamus?</p>
+                            <small>October 18, 2019, New York City</small>
+                            <a style="color: darkgreen; text-decoration: none;" href="#"><b>Delivery</b></a> 
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .right-side {
+                        margin-top: 80px;
+                    }
+
+                    .right-side h4:hover {
+                        color: blueviolet;
+                        transition-delay: 0.2s;
+                    }
+                </style>
+                <div class="container-fluid pb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{% static 'images/app-photo.jpeg' %}" style="width: 130%; position: absolute;" alt="app"> <br>
+            
+                        </div>
+                        <div class=" right-side col-md-6">
+                            <h4> <b> Easy Booking
+                                </b></h4>
+                            <p> Facilitate customers with a comfortable service booking experience.</p>
+                            <h4> <b> User-Friendly Menu</b></h4>
+                            <p>Users can easily request the service with customized service level options</p>
+                            <h4><b> Alerts & Notifications</b></h4>
+                            <p>EasyService platform allows instant notification sharing with the users and providers.</p>
+                            <h4><b> Promos & Feedback</b></h4>
+                            <p>You can acquire more customers and engage them with promos and feedback.</p>
+                            <h4><b>Secure Payments</b>
+                            </h4>
+                            <p> Our highly secure platform offers various payment integrations.</p>
+                            <h4><b>Live Tracking</b></h4>
+                            <p> EasyService solution provides live tracking of service providers for customers and admin.
+                            </p>
+                            <h4><b>Save time, Save money,Conserve energy</b></h4>
+                            <p>You dictate your price and contractors compete to earn your business.Payments are seamless. No need for cash or checks</p>
+                            <br>
+                            <div class="full">
+                                <div class="d-felx">
+                                    <a href="#"> <img class="app-logo" style="width: 30%;" src="{% static 'images/app-store.png' %}" alt="app-store-logo"></a>
+                            <a href="#"> <img class="app-logo" src="{% static 'images/google-play.png' %}"  alt="google-play-logo"></a>
+                       
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+    </main>
+
+    {% include 'partials/footer.html' %}
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        function initFreshChat() {
+          window.fcWidget.init({
+            token: "dafecd2d-1b6f-4948-a120-374d28631ca0",
+            host: "https://wchat.freshchat.com"
+          });
+        }
+        function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://wchat.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))}function initiateCall(){initialize(document,"freshchat-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
+      </script>
+
+    <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+    {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+
+
+
+
+</body>
+
+</html>

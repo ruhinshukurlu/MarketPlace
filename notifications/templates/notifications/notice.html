@@ -1,0 +1,26 @@
+<div class="alert alert-block mb-3 border-bottom" >
+  <div class="p-relative">
+    <h4>
+      <i class="icon-mail{% if notice.unread %}-alt{% endif %}"></i>
+      {{ notice.verb|safe }}
+      {% if notice.target %}
+        of {{ notice.target }}
+      {% endif %}
+    </h4>
+    
+    <p>{{ notice.timesince }} ago</p>
+    
+    
+    <div class="notice-actions">
+      {% for action in notice.data.actions %}
+        <a class="btn" href="{{ action.href }}">{{ action.title }}</a>
+      {% endfor %}
+    </div>
+    <a class="btn btn-outline-success" href="{% url 'notifications:mark_as_read' notice.slug %}">
+        <i class="icon-close"></i>
+        Mark as Read
+    </a>
+  </div>
+  
+  
+</div>

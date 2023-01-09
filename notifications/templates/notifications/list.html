@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reserve-page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <title>Notifications</title>
+</head>
+
+
+<body id="profile-body">
+    
+    {% include 'partials/header.html' %}
+
+    <!-- <main class="mb-5"> -->
+        <div class="container main-register-container shadow pb-5 mb-5 mt-5" style="min-height: 500px;">
+            <div class="row">
+                <div class="col-lg-8 mx-auto pt-5">
+                  {% if notifications %}
+                    {% if request.user.is_worker %}
+                      <div class="d-flex full justify-content-end">
+                        
+                      <a href="{% url 'core:task-list' %}" class="btn btn-outline-primary mb-3">View All your new tasks</a>
+
+                      </div>
+                    {% endif %}
+                  {% endif %}
+
+                  <ul class="notifications">
+                      {% for notice in notifications %}
+                        {% include 'notifications/notice.html' %}
+                      {% empty %}
+                      <h3 class="bold full text-center">
+                        You don't have any notification
+                      </h3>
+                    {% endfor %}
+                  </ul>
+                </div>
+                
+            </div>
+            
+        
+        </div>
+    <!-- </main> -->
+
+    {% include 'partials/footer.html' %}
+
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            
+
+            $('.show-menu-btn').click(function(){
+                $('.menu-container').toggleClass('collapse-menu')
+                
+                if ($(this).text() == 'Show full menu') {
+                    $(this).text('Collapse Menu')
+                }
+                else{
+                    $(this).text('Show full menu')
+                }
+            });
+        });
+    </script>
+
+    
+</body>
+</html>

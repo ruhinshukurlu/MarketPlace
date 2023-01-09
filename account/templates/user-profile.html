@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+    <title>My Profile</title>
+    
+    <style>
+        .custom-container{
+            background-color: transparent;
+        }
+    </style>
+
+</head>
+<body id="profile-body">
+    {% include 'partials/header.html' %}
+
+    <div class="container custom-container bg-white shadow border-top">
+        <div class="row username-box">  
+            {% if user.profile_img %}
+                <a data-fancybox="gallery" href="{{user.profile_img.url}}"><img src="{{user.profile_img.url}}"></a>
+            {% else %}
+                <img src="{% static 'images/profile.png' %}" alt="">
+            {% endif %}
+            <div class="align-center d-column">
+                <h2 class="m-0"> {{user.first_name|capfirst}} {{user.last_name|capfirst}} </h2>
+                <div class="d-flex align-center mt-1">
+                    <i class="far fa-envelope mr-1"></i>
+                    <span>Email : </span>
+                    <span>{{user.email}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="mb-5 mt-3">
+        <div class="container custom-container">
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-lg-3 bg-white shadow reservations">
+                        <nav>
+                            <ul class="profile-menu-list">
+                                <li><a href="{% url 'account:change-password' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-exchange-alt mr-1"></i>
+                                    Change Password</a></li>
+                                <li><a href="{% url 'account:user-update' user.pk %}" class="btn btn-outline-success">
+                                    <i class="far fa-edit mr-1"></i>
+                                    Edit</a></li>
+                                <li><a href="{% url 'account:logout' %}" class="btn btn-outline-danger">
+                                    <i class="fas fa-sign-out-alt mr-1"></i>
+                                    Logout</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="reservations shadow mb-5">
+                            <div class="name">
+                                <h3>Upcoming Services</h3>
+                            </div>
+                            <div class="content">
+                                <p>No Upcoming Service</p>
+                            </div>
+                        </div>
+                        <div class="reservations shadow">
+                            <div class="name">
+                                <h3>Past Services</h3>
+                            </div>
+                            <div class="content">
+                                <p>No Past Service</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    {% include 'partials/footer.html' %}
+
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    
+    
+</body>
+</html>

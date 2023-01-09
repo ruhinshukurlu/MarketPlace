@@ -1,0 +1,99 @@
+{% load static %}
+<style>
+    header .side{
+        margin: 5px 0;
+    }
+</style>
+<header > 
+    <div class="custom-container container custom-container-mobile shadow">
+        <div class="row justify-content-between">
+            <div class="left side">
+                <a href="{% url 'core:home' %}"> 
+                    <img src="{% static 'images/easy-logo.png' %}" width="200px" height="60px" style="object-fit: cover;" alt="">
+                </a>
+            </div>
+            <div class="right side">
+                
+                {% if request.user.is_authenticated %}
+                    <div class="user-profile">
+                        <button type="button" class="header-btn"> 
+                            <i class="far fa-user"></i>
+                        </button>
+                        <div class="custom-drop-down shadow box1" style="display: none;">
+                            <div class="triangle"></div>
+                            <span>Hello, {{request.user.first_name|capfirst}}</span>
+                            <ul>
+                                {% if request.user.is_worker %}
+                                <li><a href="{% url 'worker:add-skill' %}">
+                                    <i class="far fa-plus-square mr-2"></i>
+                                    Add Skill</a></li>
+                                    <li><a href="{% url 'account:worker-detail' request.user.worker.pk %}">
+                                        <i class="far fa-user-circle mr-2"></i>
+                                        Work Profile</a></li>
+                                    <li><a href="{% url 'core:task-list' %}">
+                                        <i class="fas fa-tasks mr-2"></i>
+                                        Your Tasks</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'account:user-profile' request.user.pk %}">
+                                    <i class="far fa-user-circle mr-2"></i>
+                                    My Profile</a></li>
+                                <li><a href="{% url 'account:logout' %} " style="color: red;">
+                                    <i class="fas fa-sign-out-alt mr-2"  style="color: red;"></i>
+                                    Sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                
+                    <div class="reserve-table">
+                        <button type="button" class="header-btn"><i class="far fa-calendar"></i></button>
+                        <div class="custom-drop-down p-3 box2 scroll-y shadow" style="display: none;">
+                            <div class="triangle"></div>
+                            <span class="pb-2">Upcoming Services</span>
+                            <p class="pl-2 pr-2">You have no upcoming Services</p>
+                        </div>
+                    </div>
+                    <div class="notification">
+                        <button type="button" class="header-btn notification-btn">
+                            <i class="far fa-bell"></i>
+                        </button>
+                        <div class="custom-drop-down box3 scroll-y p-3 shadow" style="display: none;">
+                            <div class="triangle"></div>
+                            <span>Notifications</span>
+                            <img src="{% static 'images/animat-bell-color.gif' %}" width="50%" class="m-auto" alt="">
+                            <p class="pl-2 pr-2 bold text-center">Nothing to see here, you’re all caught up!</p>                                
+                        </div>
+                    </div>
+                {% else %}
+                    <button type="button" class="btn register-btn mr-2" data-toggle="modal" data-target="#exampleModal">Sign Up</button>
+                    <a href="{% url 'account:login' %}" class="btn login-btn bold">Sign In</a>
+                {% endif %}
+                
+                
+            </div>
+        </div>
+        
+    </div>
+</header>
+
+<section>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body d-column">
+                <a href="{% url 'account:user-register' %}" class="btn register-btn mb-2">Sign Up as User</a>
+                <a href="{% url 'account:worker-register' %}" class="btn register-btn">Sign Up as Worker</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>

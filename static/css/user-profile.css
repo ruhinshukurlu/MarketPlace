@@ -1,0 +1,66 @@
+.inner-container{
+    position: relative;
+    /* width: 80%; */
+    margin: auto;
+}
+
+.username-box{
+    padding: 25px 50px;
+    display: flex;
+}
+.username-box img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 7px;
+    margin-right: 10px;
+}
+.username-box h2{
+    font-weight: bold;
+}
+
+.profile-menu-list{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.profile-menu-list a{
+    text-decoration: none;
+    color: #000;
+}
+
+.profile-menu-list li{
+    margin-bottom: 10px;
+}
+
+.reservations{
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 15px;
+}
+
+.name,
+.content{
+    padding: 20px;
+}
+
+.name{
+    border-bottom: 1px solid #ccc;
+}
+
+#profile-body{
+    background-color: #f1f2f4;
+}
+
+header .container{
+    background-color: #fff;
+}
+
+#profile-footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

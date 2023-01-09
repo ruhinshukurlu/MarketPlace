@@ -1,0 +1,278 @@
+#arrow-down{
+    font-size: 16px;
+}
+
+.company-header-img{
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+}
+
+.image-gallery img{
+    /* width: 400px; */
+    margin-bottom: 10px;
+}
+
+.image-gallery{
+    flex-wrap: wrap;
+}
+
+.img-box{
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+#custom-retaurant-carousel .item{
+    margin: 3px;
+}
+
+#custom-retaurant-carousel .item img{
+    display: block;
+    width: 100%;
+    height: 180px;
+}
+
+.menu-box{
+    border-bottom: 1px solid #ccc;
+}
+
+.menu-list li{
+    margin-right: 5px;
+    padding: 10px;
+}
+.menu-list li:first-child{
+    border-bottom: 2px solid red;
+}
+.menu-list li:hover{
+    border-bottom: 2px solid red;
+}
+
+.menu-list li:hover a{
+    color: red;
+}
+
+.menu-list li a{
+    text-decoration: none;
+    color: #000;
+}
+
+.company-name{
+    width: 100%;
+    padding: 30px 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.photo-gallery a{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.photo-gallery img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.menu-item-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.menu-section-header,
+.menu-item-header span{
+    font-weight: bold;
+}
+
+.menu-description p{
+    color: #727070;
+}
+
+/* .collapse-menu{
+    content: " ";
+    z-index: 10;
+    display: block;
+    position: absolute;
+    height: 200px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-image: linear-gradient(to top,#fff,rgba(255,255,255,0));
+    background-color: rgba(255,255,255,.2);
+} */
+
+.collapse-menu{
+    height: 350px;
+    overflow: hidden;
+}
+
+.comments-section{
+    flex-direction: column;
+}
+
+.comment-author,
+.reserve-author{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-author-profile-img,
+.reserve-author-profile-img{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.comment-item{
+    margin-bottom: 50px;
+    border-bottom: 1px solid #ccc;
+}
+
+.save-restaurant-btn{
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+    color: black;
+    padding: 20px 40px;
+    right: 40px;
+    top: 40px;
+}
+
+.save-restaurant-btn input{
+    background: transparent;
+}
+
+.save-restaurant-btn:hover{
+    text-decoration: none;
+}
+
+.order-box,
+.reserve-box{
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.phone-number{
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.phone-number p{
+    margin: 0;
+    color: red;
+}
+
+.reserve-form label{
+    width: 100%;
+    font-weight: bold;
+}
+
+.find-table-btn{
+    width: 100%;
+    height: 50px;
+    background-color: #da3743;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.find-table-btn:hover{
+    text-decoration: none;
+    color: #fff;
+}
+
+#party-size,
+#reserve-time,
+#reserve-date{
+    background-color: white;
+    width: 100%;
+    cursor: pointer;
+    height: 45px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.go-reserve-btn{
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #28a745;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.go-reserve-btn:hover{
+    text-decoration: none;
+    color: #FBFF00;
+}
+
+.company-info-block{
+    flex-direction: column;
+    align-items: center;
+}
+
+.company-info-block h3{
+    display: none;
+}
+
+.company-info-block .col-6{
+    max-width: 80%;
+    margin-bottom: 20px;
+}
+
+.company-info-block span{
+    font-weight: bold;
+}
+
+
+.show-menu-btn{
+    padding: 15px 50px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    outline: none !important;
+}
+
+.photo-gallery .col{
+    padding: 3px;
+}
+
+.admin-menu-list{
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-menu-list a{
+    width: 100%;
+    padding: 25px;
+    color: #000;
+    text-decoration: none;
+}
+
+.admin-menu-list li{
+    transition: .4s;
+}
+
+.admin-menu-list li:hover{
+    background-color: #E8E8E8;
+}
+
+.admin-menu-list .d-flex{
+    align-items: center;
+}

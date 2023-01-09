@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reserve-page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <title>Worker Register</title>
+</head>
+<body id="profile-body">
+
+    <style>
+        .form-control{
+            border: 1px solid #ccc;
+            height: 50px;
+        }
+
+        .form-control:focus{
+            border: 1px solid rgb(110, 177, 253);
+        }
+        #id_birth_date_day{
+            margin-left: 10px;
+            margin-right: 10px;
+
+        }
+    </style>
+    
+    {% include 'partials/header.html' %}
+
+    <!-- <main class="mb-5"> -->
+        <div class="container main-register-container pb-5 mb-5 shadow">
+            <div class="row">
+                <div class="col-lg-12 pt-5">
+                    <p class="bold text-center">You have to fill all informations correctly, we will come back you in shortest time.</p>
+                    <form method="POST">
+                        {% csrf_token %}
+
+            
+
+                        <div class="row">
+
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.first_name.label_tag}}</div>
+                                        <div>
+                                            {{form.first_name}}
+                                            {{form.first_name.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.last_name.label_tag}}</div>
+                                        <div>
+                                            {{form.last_name}}
+                                            {{form.last_name.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.username.label_tag}}</div>
+                                        <div>
+                                            {{form.username}}
+                                            {{form.username.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.password1.label_tag}}</div>
+                                        <div>
+                                            {{form.password1}}
+                                            {% for error in form.password1.errors %}
+                                                <span>{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.password2.label_tag}}</div>
+                                        <div>
+                                            {{form.password2}}
+                                            {% for error in form.password2.errors %}
+                                                <span>{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.phone_number.label_tag}}</div>
+                                        <div>
+                                            {{form.phone_number}}
+                                            {{form.phone_number.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.languages.label_tag}}</div>
+                                        <div>
+                                            {{form.languages}}
+                                            {{form.languages.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group " >
+                                        <div>{{form.experience.label_tag}}</div>
+                                        <div>
+                                            {{form.experience}}
+                                            {{form.experience.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group " >
+                                        <div>{{form.work_place.label_tag}}</div>
+                                        <div>
+                                            {{form.work_place}}
+                                            {{form.work_place.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group " >
+                                        <div>{{form.about.label_tag}}</div>
+                                        <div>
+                                            {{form.about}}
+                                            {{form.about.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group " >
+                                        <div>{{form.birth_date.label_tag}}</div>
+                                        <div class="d-flex">
+                                            {{form.birth_date}}
+                                            {{form.birth_date.errors}}
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 mx-auto">
+                                <div class="form-group">
+                                    <input type="submit" value="CONTACT US" class="btn btn-danger register-restaurant-btn" style="width: 100%;">
+                                </div>
+                            </div>
+
+                        </div>
+                     
+                    </form>
+                </div>
+            
+                
+                
+              
+            </div>
+        
+        </div>
+    <!-- </main> -->
+    
+    {% include 'partials/footer.html' %}
+
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    
+
+    <script>
+        $(document).ready(function(){
+            $('.header-btn').click(function(){
+                $('.custom-drop-down').hide()
+                $(this).siblings('.custom-drop-down').slideToggle()
+            });
+
+            $('.show-menu-btn').click(function(){
+                $('.menu-container').toggleClass('collapse-menu')
+                
+                if ($(this).text() == 'Show full menu') {
+                    $(this).text('Collapse Menu')
+                }
+                else{
+                    $(this).text('Show full menu')
+                }
+            });
+        });
+    </script>
+</body>
+</html>

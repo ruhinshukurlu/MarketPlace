@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome Icon Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- CSS Link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+    <title>Document</title>
+</head>
+
+<style>
+    header a {
+    text-decoration: none;
+    color: black;
+  }
+
+    .checked {
+        color: orange;
+    }
+
+    .card .list-group .list-group-item a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .card .list-group .list-group-item:hover {
+        background-color: rgba(206, 206, 206, 0.753);
+        transition-delay: 0.2s;
+    }
+</style>
+
+<body>
+    
+    {% include 'partials/header.html' %}
+
+    <section>
+        <div class="custom-container mt-5 shadow pt-5">
+            <div class="inner-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-12">
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4 pt-2">
+                                        {% if worker.user.profile_img %}
+                                        <a data-fancybox="gallery" href="{{worker.user.profile_img.url}}">
+                                            <img src="{{worker.user.profile_img.url}}" style="width: 120px; height: 120px; object-fit: cover;" alt="profile-photo">
+                                        </a>
+                                        {% else %}
+                                            <img src="{% static 'images/profile.png' %}" style="width: 120px; height: 120px; object-fit: cover;" alt="profile-photo">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title bold">{{worker.user.first_name|capfirst}} {{worker.user.last_name|capfirst}} {{service}}</h5>
+                                            <p class="card-text"> <span style="color: cornflowerblue;"><img src="{% static 'images/medal-icon.svg' %}" style="width: 18px;" alt="medal-icon"> Elite Tasker </span>
+                                                <br>
+                                                <span class="fa fa-star checked"></span>
+                                                5.0 (186 reviews) <br>
+                                                453 overall tasks
+                                            </p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card p-2" style=" max-width:540px;"">
+                                <div class=" card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional
+                                    content.</p>
+
+                                <hr>
+                                <p>
+                                    <img src="{% static 'images/location icon.svg' %}" style="width: 18px;" alt="location-icon"> Working in New
+                                    York City <br>
+                                    <img src="{% static 'images/verify-icon.svg' %}" style="width: 18px;" alt="verify-icon"> ID verified <br>
+                                    <img src="{% static 'images/calendar.svg' %}" style="width: 18px;" alt="calendar-icon"> Tasker since 2017
+                                </p>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-3 style=" max-width: 540px;"">
+                            <div class="card-header">
+                                Featured
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% for skill in worker.user.skill.all %}
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <a href="?skill={{skill.service.slug}}">{{skill.service.title}}</a>
+                                        <img src="{% static 'images/arrow-icon.svg' %}" style="width: 25px;" alt="arrow-icon">
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- right side -->
+                <div class="col-md-8">
+                    {% for skill in skills %}
+                        <div class="he" style="display: flex; justify-content: space-between;">
+                            <div class="div">
+                                <h5 class="bold">{{skill.service.title}} for ${{skill.price}}</h5>
+                                <span class="fa fa-star checked"></span> 5.0 (10 reviews) <br>
+                                <img src="{% static 'images/done icon.svg' %}" style=" width:18px" alt="done-icon"> 32 Furniture Assembly tasks <br>
+                                <div class="d-flex">
+                                    <img src="{% static 'images/vehicle.svg' %}" style=" width:18px" alt="vehicle"> 
+                                    Vehicles:
+                                    {% if skill.vehicles %}
+                                        {% for vehicle in skill.vehicles.all %}
+                                            {{vehicle.title}}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="d-flex">
+                                    <img src="{% static 'images/vehicle.svg' %}" style=" width:18px" alt="vehicle"> 
+                                    Tools:
+                                    {% for tool in skill.tools.all %}
+                                        {{tool.title}},
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div>
+                                {% if request.user.is_authenticated %} 
+                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#requestModal">Select & Continue</a>
+                                {% else %}
+                                    <a href="{% url 'account:login' %}" class="btn btn-success" >Select & Continue</a>
+                                {% endif %}
+                            </div>
+                            
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Select Date and Time For Task</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                                {{form.as_p}} 
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-outline-success">Create Task</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="div border-bottom mb-5 pb-2">
+                            <h5 class="bold">Skills and Experience</h5>
+                            {{skill.experience}}
+                        </div>
+                        <div class="div">
+                            <h5 class="bold">Photos</h5>
+                            {% if skill.skillphoto.all %}
+                                {% for photo in skill.skillphoto.all %}
+                                    <a data-fancybox="gallery" href="{{photo.image.url}}">
+                                        <img src="{{photo.image.url}}" style="width: 100px; height: 100px; border-radius: 5px; object-fit: cover;" class="mr-2" alt="">
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                No Photo added for this skill
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="div mt-3">
+                        <h5 class="bold">Reviews</h5>
+                    </div>
+                    <!-- User -->
+                    <div class="container">
+                        <div class="row" style="width: 250px;">
+                            <div class="col-md-6"><img
+                                    src="https://volstar-official.jp/media/wp-content/themes/jin/img/woman2.png" alt="photo"
+                                    style="width: 80px;"> </div>
+                            <div class="col-md-6"> <br> <b>Carrie D. <br> </b>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                            </div>
+                        </div><br>
+                        <p>“Lorem ipsum dolor sit amet. ” <br> <small>April 25, 2020</small></p>
+
+                    </div>
+                    <!-- User -->
+                    <div class="container">
+                        <div class="row" style="width: 250px;">
+                            <div class="col-md-6"><img
+                                    src="https://volstar-official.jp/media/wp-content/themes/jin/img/woman2.png" alt="photo"
+                                    style="width: 80px;"> </div>
+                            <div class="col-md-6"> <br> <b>Kimberly K.<br> </b>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                        </div><br>
+                        <p>“Lorem ipsum dolor sit amet, consectetur adipisicing. ” <br> <small>April 25, 2020</small></p>
+
+                    </div>
+                    <!-- User -->
+                    <div class="container">
+                        <div class="row" style="width: 250px;">
+                            <div class="col-md-6"><img
+                                    src="https://volstar-official.jp/media/wp-content/themes/jin/img/woman2.png" alt="photo"
+                                    style="width: 80px;"> </div>
+                            <div class="col-md-6"> <br> <b>Gustavo M. <br> </b>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                        </div><br>
+                        <p><br> <small>April 25, 2020</small></p>
+
+                    </div>
+                    <!-- User -->
+                    <div class="container">
+                        <div class="row" style="width: 250px;">
+                            <div class="col-md-6"><img
+                                    src="https://volstar-official.jp/media/wp-content/themes/jin/img/woman2.png" alt="photo"
+                                    style="width: 80px;"> </div>
+                            <div class="col-md-6"> <br> <b>Stacey B. <br> </b>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                        </div><br>
+                        <p>“Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit. ” <br> <small>April 25,
+                                2020</small></p>
+
+                    </div>
+
+
+                </div>
+            
+            
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% include 'partials/footer.html' %}
+
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+
+
+</body>
+
+</html>

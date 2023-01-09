@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <title>Works</title>
+
+
+
+</head>
+<body id="company-admin-body">
+    
+    {% include 'partials/header.html' %}
+
+    <main class="full-h">
+        <div class="full full-h">
+            <div class="row full-h  justify-content-center">
+                
+                <div class="col-10">
+                    <div class="container mt-3">
+                        <div class="row">
+                            <h3 class="full bottom-border text-center bold pb-3 mb-5">All Your Works </h3>
+                            <div class="reservations full shadow">
+                                <div class="name">
+                                    <h3 class="bold">New Works</h3>
+                                </div>
+                                <div class="content">
+                                    <!-- <p>No Upcoming Reservations</p> -->
+                                    {% if upcoming_tasks %}
+                                        {% for task in upcoming_tasks %}
+                                            <div class="comment-item row">
+                                                <div class="col-12 col-sm-3 comment-author">
+                                                    <div class="reserve-author-profile-img">{{task.user.first_name|capfirst|first}}{{task.user.last_name|capfirst|first}}</div>
+                                                    <div class="comment-author-username">{{task.user.email}}</div>
+                                                    <div class="comment-author-address">{{task.user.first_name|capfirst}} {{task.user.last_name|capfirst}}</div>                           
+                                                </div>
+                                                <div class="col-12 col-sm-9 mt-2 d-flex padding">
+                                                    <div class="col-12 col-lg-12 padding">
+                                                        <div class="d-flex">
+                                                            <div class="d-flex ">
+                                                                <span class="bold mr-2">Task Date : </span>
+                                                                <p>{{task.date}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex">
+                                                            <div class="d-flex ">
+                                                                <span class="bold mr-2">Task Time : </span>
+                                                                <p>{{task.time|time:'H:i:s'}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="d-column">
+                                                                <span class="bold">Task Detail</span>
+                                                                <p>{{task.text}}</p>
+                                                            </div>
+                                                            <div class="d-column align-items-end pb-2">
+                                                                <form action="{% url 'core:accept' task.id %}" method="post" class="mb-2">
+                                                                    {% csrf_token %}
+                                                                    <button class="btn btn-outline-success" type="submit">
+                                                                        <i class="far fa-check-circle mr-1"></i>
+                                                                        Accept
+                                                                    </button>
+                                                                    
+                                                                </form>
+    
+                                                                <form action="{% url 'core:denied' task.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <button class="btn btn-outline-danger" type="submit">
+                                                                        <i class="far fa-times-circle mr-1"></i>
+                                                                        Refuse
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div> 
+                                                       
+                                                    </div> 
+                                                    
+                                                </div>
+                                            </div>
+                                        {% endfor %}   
+                                    {% else %}
+                                        <p>No New Task</p>
+                                    {% endif %}
+                                        
+                                </div>
+                            </div>
+                            <div class="reservations full shadow">
+                                <div class="name">
+                                    <h3 class="bold">Accepted Tasks</h3>
+                                </div>
+                                <div class="content">
+                                    {% if accepted_tasks %}
+                                        {% for task in accepted_tasks %}
+                                        <div class="comment-item row">
+                                            <div class="col-12 col-sm-3 comment-author">
+                                                <div class="reserve-author-profile-img">{{task.user.first_name|capfirst|first}}{{task.user.last_name|capfirst|first}}</div>
+                                                <div class="comment-author-username">{{task.user.email}}</div>
+                                                <div class="comment-author-address">{{task.user.first_name|capfirst}} {{task.user.last_name|capfirst}}</div>                           
+                                            </div>
+                                            <div class="col-12 col-sm-9 mt-2 d-flex padding">
+                                                <div class="col-12 col-lg-12 padding">
+                                                    <div class="d-flex">
+                                                        <div class="d-flex ">
+                                                            <span class="bold mr-2">Task Date : </span>
+                                                            <p>{{task.date}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <div class="d-flex ">
+                                                            <span class="bold mr-2">Task Time : </span>
+                                                            <p>{{task.time|time:'H:i:s'}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-column">
+                                                            <span class="bold">Task Detail</span>
+                                                            <p>{{task.text}}</p>
+                                                        </div>
+                                                         
+                                                    </div> 
+                                                   
+                                                </div> 
+                                                
+                                            </div>
+                                        </div>
+                                        {% endfor %}   
+                                    {% else %}
+                                        <p>No Accepted Task</p>
+                                    {% endif %}
+                                        
+                                </div>
+                            </div>
+                            <div class="reservations full mb-5 shadow">
+                                <div class="name">
+                                    <h3 class="bold">Past Works</h3>
+                                </div>
+                                <div class="content">
+                                    <!-- <p>No Upcoming Reservations</p> -->
+                                    {% if past_tasks %}
+                                        {% for task in past_tasks %}
+                                        <div class="comment-item row">
+                                            <div class="col-12 col-sm-3 comment-author">
+                                                <div class="reserve-author-profile-img">{{task.user.first_name|capfirst|first}}{{task.user.last_name|capfirst|first}}</div>
+                                                <div class="comment-author-username">{{task.user.email}}</div>
+                                                <div class="comment-author-address">{{task.user.first_name|capfirst}} {{task.user.last_name|capfirst}}</div>                           
+                                            </div>
+                                            <div class="col-12 col-sm-9 mt-2 d-flex padding">
+                                                <div class="col-12 col-lg-12 padding">
+                                                    <div class="d-flex">
+                                                        <div class="d-flex ">
+                                                            <span class="bold mr-2">Task Date : </span>
+                                                            <p>{{task.date}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <div class="d-flex ">
+                                                            <span class="bold mr-2">Task Time : </span>
+                                                            <p>{{task.time|time:'H:i:s'}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-column">
+                                                            <span class="bold">Task Detail</span>
+                                                            <p>{{task.text}}</p>
+                                                        </div>
+                                                         
+                                                    </div> 
+                                                   
+                                                </div> 
+                                                
+                                            </div>
+                                        </div>
+                                        {% endfor %}   
+                                    {% else %}
+                                        <p>No Past Task</p>
+                                    {% endif %}
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        
+    </script>
+</body>
+</html>

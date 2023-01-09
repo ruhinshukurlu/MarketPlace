@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+    db:
+        image: postgres
+        restart: always
+        ports:
+          - "5432:5432"
+        volumes:
+          - ../pgdb/:/var/lib/postgresql/data
+        environment:
+          POSTGRES_PASSWORD: marketplace
+          POSTGRES_USER: techsavior
+          POSTGRES_DB: techsavior
